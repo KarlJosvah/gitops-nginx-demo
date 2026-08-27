@@ -10,6 +10,14 @@ spec:
   workspaces:
     - name: source
   steps:
+    - name: debug-list-workspace
+      image: busybox
+      script: |
+        #!/bin/sh
+        echo "--- contents of $(workspaces.source.path) ---"
+        ls -la $(workspaces.source.path)
+        echo "--- recursive, 2 levels ---"
+        find $(workspaces.source.path) -maxdepth 2
     - name: build-and-push
       image: gcr.io/kaniko-project/executor:latest
       env:
@@ -17,7 +25,7 @@ spec:
           value: /kaniko/.docker
       args:
         - --dockerfile=Dockerfile
-        - --context=/workspace/source/app
+        - --context=$(workspaces.source.path)/app
         - --destination=$(params.image)
       computeResources:
         requests:
