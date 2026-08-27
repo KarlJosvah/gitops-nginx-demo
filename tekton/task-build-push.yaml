@@ -16,7 +16,7 @@ spec:
         - name: DOCKER_CONFIG
           value: /kaniko/.docker
       args:
-        - --dockerfile=app/Dockerfile
+        - --dockerfile=Dockerfile
         - --context=/workspace/source/app
         - --destination=$(params.image)
       computeResources:
