@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: update-manifest
+  namespace: web
+spec:
+  params:
+    - name: repo-url
+      type: string
+    - name: image
+      type: string
+  workspaces:
+    - name: source
+  steps:
+    - name: git-commit-new-tag
+      image: alpine/git
+      script: |
+        #!/bin/sh
+        set -e
+        cd /workspace/source
+        git config user.email "tekton-bot@example.com"
+        git config user.name "tekton-bot"
+        sed -i "s#image: .*#image: $(params.image)#" k8s/deployment.yaml
+        git add k8s/deployment.yaml
+        git commit -m "ci: update image to $(params.image)" || echo "nothing to commit"
+        git push origin HEAD:main
