@@ -17,7 +17,8 @@ spec:
       script: |
         #!/bin/sh
         set -e
-        cd /workspace/source
+        git config --global --add safe.directory $(workspaces.source.path)
+        cd $(workspaces.source.path)
         git config user.email "tekton-bot@example.com"
         git config user.name "tekton-bot"
         sed -i "s#image: .*#image: $(params.image)#" k8s/deployment.yaml
