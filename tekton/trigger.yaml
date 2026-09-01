@@ -61,6 +61,17 @@ spec:
                 secretKey: secretToken
             - name: "eventTypes"
               value: ["push"]
+        - ref:
+            name: "cel"
+          params:
+            - name: "filter"
+              value: >
+                body.commits.exists(c, c.author.name != 'tekton-bot') &&
+                body.commits.exists(c,
+                  c.added.exists(f, f.startsWith('app/')) ||
+                  c.modified.exists(f, f.startsWith('app/')) ||
+                  c.removed.exists(f, f.startsWith('app/'))
+                )
       bindings:
         - ref: github-push-binding
       template:
