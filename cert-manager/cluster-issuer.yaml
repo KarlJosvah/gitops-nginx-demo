@@ -3,4 +3,4 @@ kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
 spec:
-  selfSigned: {}
+  selfSigned: {} # trivial changes
