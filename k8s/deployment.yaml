@@ -21,7 +21,7 @@ spec:
         - name: nginx
           image: ghcr.io/karljosvah/gitops-demo:241fd8c47b0a8d864ede9265c5390115285e425e
           ports:
-            - containerPort: 80
+            - containerPort: 8080
           resources:
             requests:
               cpu: "50m"
