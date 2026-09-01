@@ -14,6 +14,17 @@ spec:
   steps:
     - name: git-commit-new-tag
       image: alpine/git
+      env:
+        - name: GIT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: git-credentials
+              key: username
+        - name: GIT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: git-credentials
+              key: password
       script: |
         #!/bin/sh
         set -e
@@ -24,4 +35,5 @@ spec:
         sed -i "s#image: .*#image: $(params.image)#" k8s/deployment.yaml
         git add k8s/deployment.yaml
         git commit -m "ci: update image to $(params.image)" || echo "nothing to commit"
-        git push origin HEAD:main
+        AUTH_URL=$(echo "$(params.repo-url)" | sed "s#https://#https://${GIT_USERNAME}:${GIT_PASSWORD}@#")
+        git push "$AUTH_URL" HEAD:main
