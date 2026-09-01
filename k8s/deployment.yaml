@@ -19,7 +19,7 @@ spec:
         - name: ghcr-credentials
       containers:
         - name: nginx
-          image: ghcr.io/karljosvah/gitops-demo:d722e539ae86021dcfae38cee5bb5c68c45f8493
+          image: ghcr.io/karljosvah/gitops-demo:e929a4c56c455896254d3c0feb4559c8decc5326
           ports:
             - containerPort: 80
           resources:
